@@ -11,9 +11,9 @@
                                         class="img-fluid profile-image-pic img-thumbnail rounded-circle my-3" width="0"
                                         alt="profile"></div>
                                 <div class="mb-3"><input type="email" class="form-control" id="Username"
-                                        aria-describedby="emailHelp" placeholder="Email"></div>
-                                <div class="mb-3"><input type="password" class="form-control" id="password"
-                                        placeholder="Senha">
+                                        aria-describedby="emailHelp" v-model="data.email" required placeholder="Email"></div>
+                                <div class="mb-3"><input type="password" class="form-control" required id="password"
+                                        placeholder="Senha" v-model="data.password">
                                 </div>
                                 <div class="text-center"><button type="submit"
                                         class="btn btn-color px-5 mb-5 w-100">Login</button></div>
@@ -27,11 +27,25 @@
 </template>
 
 <script>
+import Auth from "../services/auth.js";
+import { validate_login } from "@/services/validacao/validate_login.js";
 export default {
     name:'LoginComp',
+    data() {
+        return {
+            data:{
+                email:'',
+                password:''
+            }
+        }
+    },
+
     methods: {
         login() {
-
+            if(validate_login(this.data)){
+                Auth.login(this.data)
+                this.data=''
+            }
         },
     },
 }
